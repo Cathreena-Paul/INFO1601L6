@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <title>Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+
+  <body>
+    <nav>
+        <div class="nav-wrapper teal" style="padding-left: 10px;">
+           <a href="#!" class="brand-logo">Ajax Demo</a>
+        </div>
+    </nav>
+    <main class="row" style="padding: 40px">
+         <table>
+           <thead>
+                <tr>
+                   <th>#</th>
+                   <th>name</th>
+                   <th>Type</th>
+                   <th>website</th>
+                </tr>
+                </thead>
+                  <tbody id="result">
+                                                
+                  </tbody>
+           </table>
+     </main>
+     <script>
+
+//*note the use of backticks
+//using string interpolation
+//a row in the table would look like;
+//JSONVue
+
+function drawTable(records){
+          let result = document.querySelector('#result');
+          //add html code inside of result
+          let html = '';// create html string
+          for(let record of records){
+              //build html string
+              html += `<tr id="${record.id}">
+                <td>${record.id}</td>
+                <td>${record.name}</td>
+                <td>${record.brewery_type}</td>
+                <td><a href="#${record.id}" onclick="getData('https://api.openbrewerydb.org/breweries/${record.id}', drawDetails)" >View More Details</a></td>    
+              </tr>`;
+          }
+          result.innerHTML = html;//add html string to DOM
+      }
+
+async function getData(url){
+   try{
+     let response = await fetch(url);//1. Send http request and get response
+     let result = await response.json();//2. Get data from response
+     drawTable(result);// 3. Do something with the data
+  }catch(e){
+      console.log(e);//catch and log any errors
+  }
+}
+getData("https://api.openbrewerydb.org/breweries/search?query=harry")
+
+//rick and morty api
+     </script>
+  </body>
+</html>
